@@ -5,7 +5,7 @@ import { FaEdit } from 'react-icons/fa';
 //image
 import image from '../images/man-with-beard-avatar-character-isolated-icon-free-vector.jpg';
 
-const User = () => {
+const User: React.FC = () => {
 	return (
 		<div className='flex justify-between'>
 			<div className='flex flex-col gap-4 items-center justify-center'>

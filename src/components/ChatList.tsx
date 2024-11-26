@@ -3,9 +3,9 @@ import { FaSearch } from 'react-icons/fa';
 import { IoIosAddCircle } from 'react-icons/io';
 import image from '../images/man-with-beard-avatar-character-isolated-icon-free-vector.jpg';
 
-const ChatList = () => {
+const ChatList: React.FC = () => {
 	return (
-		<div className='flex flex-col gap-4 h-[550px] overflow-y-auto p-4 bg-gray-100 rounded-md'>
+		<div className='flex flex-col gap-4 h-[520px] xl:h-[450px] mt-4 overflow-y-auto p-4 bg-gray-100 rounded-md'>
 			{/* searc bar */}
 			<div className='flex gap-2'>
 				<FaSearch size={25} />
