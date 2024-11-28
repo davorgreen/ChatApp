@@ -34,7 +34,7 @@ const Detail: React.FC = () => {
 					<button className='w-52 px-8 py-2 rounded-md bg-blue-300 text-md text-white font-semibold hover:bg-blue-500'>
 						Shared Files
 					</button>
-					<div className='flex flex-col gap-6  '>
+					<div className='flex flex-col gap-6 mt-6'>
 						<button className='px-36 py-2 rounded-md bg-red-400 hover:bg-red-600 text-md font-bold text-white'>
 							Block
 						</button>

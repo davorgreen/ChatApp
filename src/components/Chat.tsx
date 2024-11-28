@@ -169,7 +169,7 @@ const Chat: React.FC = () => {
 				<div ref={down}></div>
 			</div>
 			{/* input*/}
-			<div className='flex gap-2 mt-10 sm:mt-16 lg:mt-12 xl:mt-0 items-center relative'>
+			<div className='flex gap-2 mt-20 items-center relative'>
 				<FaImage size={40} />
 				<FaCamera size={40} />
 				<FaMicrophone size={30} />
