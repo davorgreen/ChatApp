@@ -1,14 +1,27 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { auth } from '../firebase/firebase';
 
 const Login: React.FC = () => {
 	const [password, setPassword] = useState<string>('');
 	const [email, setEmail] = useState<string>('');
+	const [loading, setLoading] = useState<boolean>(false);
 
-	const handleLogin = (e: React.FormEvent) => {
+	const handleLogin = async (e: React.FormEvent): Promise<void> => {
 		e.preventDefault();
-		toast.warn('Hello');
+		setLoading(true);
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
+		} catch (error: any) {
+			console.log(error);
+			toast.error(error.message);
+		} finally {
+			setPassword('');
+			setEmail('');
+			setLoading(false);
+		}
 	};
 	const navigate = useNavigate();
 
@@ -46,8 +59,10 @@ const Login: React.FC = () => {
 									setPassword(e.target.value);
 								}}
 							/>
-							<button className='px-36 py-2 bg-blue-600 text-white font-bold rounded-md'>
-								Sign In
+							<button
+								disabled={loading}
+								className='px-36 py-2 bg-blue-600 text-white font-bold rounded-md'>
+								{loading ? 'Loading...' : 'Sign In'}
 							</button>
 						</div>
 					</form>

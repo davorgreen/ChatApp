@@ -9,9 +9,22 @@ import {
 	BrowserRouter as Router,
 	Routes,
 } from 'react-router-dom';
+import { useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase/firebase';
 
 function App(): JSX.Element {
 	const user: boolean = false;
+
+	useEffect(() => {
+		const logged = onAuthStateChanged(auth, (user) => {
+			console.log(user);
+		});
+
+		return () => {
+			logged();
+		};
+	}, []);
 
 	return (
 		<>

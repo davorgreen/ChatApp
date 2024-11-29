@@ -5,6 +5,7 @@ import { Bounce, toast, ToastContainer } from 'react-toastify';
 import { auth, db } from '../firebase/firebase';
 import { doc, setDoc } from 'firebase/firestore';
 import 'react-toastify/dist/ReactToastify.css';
+import upload from '../firebase/upload';
 
 type ImageState = {
 	file: File | null;
@@ -20,6 +21,7 @@ const Register = () => {
 		url: '',
 	});
 	const navigate = useNavigate();
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const handleSuccess = () => {
 		toast.success(
@@ -37,7 +39,9 @@ const Register = () => {
 			}
 		);
 	};
-	const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleImage = (
+		e: React.ChangeEvent<HTMLInputElement>
+	): void => {
 		const selectedFile = e.target.files?.[0];
 		if (selectedFile) {
 			setImage({
@@ -47,26 +51,31 @@ const Register = () => {
 		}
 	};
 
-	const handleRegister = async (e: React.FormEvent) => {
+	const handleRegister = async (
+		e: React.FormEvent
+	): Promise<void> => {
 		e.preventDefault();
+		setLoading(true);
 		try {
 			const response = await createUserWithEmailAndPassword(
 				auth,
 				email,
 				password
 			);
+			const img: string = await upload(image.file as File);
 			console.log(response);
 			await setDoc(doc(db, 'users', response.user.uid), {
 				username,
 				email,
 				id: response.user.uid,
-				blocked: [],
+				image: img,
+				blocked: [] as string[],
 			});
 			await setDoc(doc(db, 'chat', response.user.uid), {
-				chat: [],
+				chat: [] as string[],
 			});
 			handleSuccess();
-		} catch (error) {
+		} catch (error: any) {
 			console.log(error);
 			toast.error(error.message);
 		} finally {
@@ -74,6 +83,7 @@ const Register = () => {
 			setEmail('');
 			setUsername('');
 			setImage({ file: null, url: '' });
+			setLoading(false);
 		}
 	};
 	return (
@@ -152,8 +162,10 @@ const Register = () => {
 								setPassword(e.target.value);
 							}}
 						/>
-						<button className='px-36 py-2 bg-blue-600 text-white font-bold rounded-md'>
-							Sign Up
+						<button
+							disabled={loading}
+							className='px-36 py-2 bg-blue-600 text-white font-bold rounded-md'>
+							{loading ? 'Loading...' : 'Sign Up'}
 						</button>
 					</div>
 				</form>
